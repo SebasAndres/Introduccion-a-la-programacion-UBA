@@ -21,7 +21,7 @@ k x = g (f x)
 -- [2]
 absoluto :: Integer -> Integer
 absoluto x | x >= 0 = x
-      | otherwise = -x
+           | otherwise = -x
 
 maximoabsoluto :: Integer -> Integer -> Integer
 maximoabsoluto x y | absoluto x > absoluto y = absoluto x
@@ -97,3 +97,32 @@ invertir :: (a, b) -> (b, a)
 invertir (a, b) = (b, a)
 
 --[5]
+todosMenores :: (Integer, Integer, Integer) -> Bool
+todosMenores (a,b,c) | (ff a > gg a) && (ff b > gg b) && (ff c > gg c) = True
+                     | otherwise = False
+
+ff :: Integer -> Integer
+ff n | n <= 7 = n^2
+    | n > 7 = 2*n -1
+
+gg :: Integer -> Integer
+gg n | (mod n 2 == 0) = div n 2
+     | otherwise = 3 * n + 1
+
+--[6]
+bisiesto :: Integer -> Bool
+bisiesto y | (not (esMultiploDe y 4) || ((esMultiploDe y 100) && not (esMultiploDe y 400))) = False
+           | otherwise = True
+
+--[7]
+distanciaManhattan :: (Float, Float, Float) -> (Float, Float, Float) -> Float
+distanciaManhattan (a,b,c) (d,e,f) = abs (a - d) + abs (b - e) + abs (c - f)
+
+--[8]
+comparar :: Integer -> Integer -> Integer
+comparar a b | sumaUltimosDosDigitos a < sumaUltimosDosDigitos b = 1
+             | sumaUltimosDosDigitos a > sumaUltimosDosDigitos b = -1
+             | sumaUltimosDosDigitos a == sumaUltimosDosDigitos b = 0
+
+sumaUltimosDosDigitos :: Integer -> Integer
+sumaUltimosDosDigitos x = (mod x 10) + (mod (div x 10) (10))
