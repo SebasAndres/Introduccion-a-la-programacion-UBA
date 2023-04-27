@@ -20,7 +20,10 @@ parteEntera n | (n >= 0) = parteEnteraPositiva n
 -- [3]
 {-
 esDivisible :: Integer -> Integer -> Bool
-esDivisible a b = (parteEntera (a / b) == div a b)
+esDivisible a b = (mod a b == 0)
+
+o tambien,
+esDivisible a b = parteEntera (a/b) == a/b
 -}
 
 -- [4]
