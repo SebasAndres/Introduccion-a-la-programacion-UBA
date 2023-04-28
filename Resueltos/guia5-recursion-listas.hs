@@ -216,33 +216,18 @@ nCharArray c n = c : nCharArray c (n-1)
 --[5]
 
 --5.1
-{-
 nat2bin :: Integer -> [Integer]
-nat2bin n | (n <= 1) = [n] 
-          | otherwise = sumaBinaria (nat2bin (n-1)) [1] 
+nat2bin 0 = [0]
+nat2bin 1 = [1]
+nat2bin n = nat2bin (div n 2) ++ [mod n 2]
 
-sumaBinaria :: [Integer] -> [Integer] -> [Integer]
-sumaBinaria [a] [b] | (a == 0) && (b == 0) = [0]
-                    | (a == 1) && (b == 0) = [1]
-                    | (a == 0) && (b == 1) = [1]
-                    | otherwise = [1, 0]
-sumaBinaria x y | (lx == 1) && (ly == 1) = ...
-                | otherwise = (sumaBinaria (sacarUltimo x) (sacarUltimo y)) : [sumaBinaria [lx] [ly]]
-                where lx = ultimo (x)
-                      ly = ultimo (y)  
-
-IN1:   1 0 1 0 1 1 
-IN2:   0 1 1 1 0 0
-------------------
-OUT: 1 0 0 0 1 1 1 
-
--}
 --5.2
 bin2nat :: [Integer] -> Integer
 bin2nat [t] = t 
 bin2nat (x:xs) | (x == 1) = 2^l + bin2nat (xs)
                | otherwise = bin2nat (xs)
                where l = longitud (x:xs)-1
+
 --5.3
 -- nat2hex :: Integer -> [Char]
 
@@ -252,18 +237,39 @@ sumaAcumulada [t] = [t]
 sumaAcumulada (x:xs) = x : sumarN x (sumaAcumulada xs)
 
 --5.5
-{-descomponerEnPrimos :: [Integer] -> [[Integer]]
+descomponerEnPrimos :: [Integer] -> [[Integer]]
 descomponerEnPrimos [t] = [descomponerEnPrimosN t]
 descomponerEnPrimos (x:xs) = descomponerEnPrimosN x : descomponerEnPrimos xs
 
 descomponerEnPrimosN :: Integer -> [Integer]
-descomponerEnPrimos n = filtrar_por_coprimos (divisores (n))
+descomponerEnPrimosN n = filtrar_por_primos (divisores (n))
 
 -- devuelve una lista con todos los divisores de n
 divisores :: Integer -> [Integer] 
+divisores n = divisoresDesde n 1
 
--- devuelve los elementos de la lista que son coprimos 2 a 2 
-filtrar_por_coprimos :: [Integer] -> [Integer]-}
+divisoresDesde :: Integer -> Integer -> [Integer]
+divisoresDesde n h | (h == n) = [n]
+                   | (mod n h == 0) = h : divisoresDesde n (h+1)
+                   | otherwise = divisoresDesde n (h+1)
+
+-- devuelve los elementos de la lista que son primos
+filtrar_por_primos :: [Integer] -> [Integer]
+filtrar_por_primos [x] | esPrimo (x) = [x]
+                       | otherwise = []
+filtrar_por_primos (x:xs) | esPrimo (x) = x : filtrar_por_primos (xs)
+                          | otherwise = filtrar_por_primos (xs)
+
+esPrimo :: Integer -> Bool
+esPrimo 1 = False
+esPrimo n = (menorDivisor n == n)
+
+menorDivisor :: Integer -> Integer
+menorDivisor n = menorDivisorDesde n 2
+
+menorDivisorDesde :: Integer -> Integer -> Integer
+menorDivisorDesde n k | (mod n k == 0) = k
+                      | otherwise = menorDivisorDesde n (k+1)
 
 --[6]
 type Set a = [a]
