@@ -165,7 +165,7 @@ agregar t set | elem t set = set
 --    chks: lista de usuarios ya chequeados
 algunAmigoTieneSecuenciaA :: RedSocial -> [Usuario] -> Usuario -> Set Usuario -> Bool
 algunAmigoTieneSecuenciaA red [] usf chks = False
-algunAmigoTieneSecuenciaA red (a:as) usf chks | not (elem a chks) && existeSecuenciaDeAmigosSin red a usf chks = True
+algunAmigoTieneSecuenciaA red (a:as) usf chks | not (elem a chks) = existeSecuenciaDeAmigosSin red a usf chks
                                               | otherwise = algunAmigoTieneSecuenciaA red as usf (agregar a (chks))
 
 -- relacionadosDirecto: dada una red y dos usuarios validos, devuelve true si son amigos, es decir, si existe una 

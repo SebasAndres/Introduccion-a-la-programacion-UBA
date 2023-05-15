@@ -12,8 +12,8 @@ f = (8, "f")
 g = (9, "g")
 h = (10, "h")
 
-relaciones = [(u1,a),(u1,b),(u1,c),(a,d),(b,e),(e,u2), (f,g), (g,h)]
-usuarios = [u1,a,b,c,d,e,u2]
+relaciones = [(u1,a),(u1,b),(u1,c),(a,d),(b,e),(e,u2),(f,g),(g,h)]
+usuarios = [u1,a,b,c,d,e,f,g,u2]
 posts = []
 redF = (usuarios, relaciones, posts)
 
