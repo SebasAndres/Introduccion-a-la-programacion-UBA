@@ -43,14 +43,14 @@ def strenghtPassword(password:str) -> str:
 def tieneMinuscula(palabra:str) -> bool:
     palabra_filtrada:str = eliminarDigNum(palabra)
     for char in palabra_filtrada:
-        if char <= "z":
+        if "a" <= char <= "z":
             return True
     return False
 
 def tieneMayuscula(palabra:str) -> bool:
     palabra_filtrada:str = eliminarDigNum(palabra)
     for char in palabra_filtrada:
-        if char < "a":
+        if "A" <= char <= "Z":
             return True
     return False
 
@@ -69,6 +69,29 @@ def eliminarDigNum(palabra:str) -> str:
         if not (k in nums):
             rt += k
     return rt
+
+def strenghtPasswordV2(password:str) -> str:
+    longitud = len(password)
+    if longitud < 5:
+        return "ROJO"
+    elif longitud > 8:
+        cantidad_mayusculas:int = 0
+        cantidad_minusculas:int = 0
+        cantidad_numeros:int = 0
+        for char in password:
+            if "a" <= char <= "z":
+                cantidad_minusculas += 1
+            elif "A" <= char <= "Z":
+                cantidad_mayusculas += 1
+            elif "1" <= char <= "9":
+                cantidad_numeros += 1
+        
+        if cantidad_mayusculas > 0 and \
+           cantidad_minusculas > 0 and \
+           cantidad_numeros > 0:
+            return "VERDE"
+        else:
+            return "AMARILLO"    
 
 def saldo(movimientos:list) -> int:
     saldo = 0

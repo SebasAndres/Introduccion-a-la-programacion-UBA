@@ -1,5 +1,3 @@
--- Completar con los datos del grupo
---
 -- Nombre de Grupo: AlgoritmosEnAccion 
 -- Integrante 1: Sebastian Andres, sebastian.ignacio.andres@gmail.com, LU: 1028/22
 -- Integrante 2: Adrian Florio, adrii.21@hotmail.com, LU: 333/23
@@ -40,7 +38,7 @@ likesDePublicacion (_, _, us) = us
 -- nombreDeUsuarios: dada una RedSocial, devuelve una lista con todos los usuarios en ella.
 nombresDeUsuarios :: RedSocial -> [String]
 nombresDeUsuarios ([],_,_) = []
-nombresDeUsuarios ((u:us),rs,ps) = snd (u) : nombresDeUsuarios (us,rs,ps)
+nombresDeUsuarios ((u:us),rs,ps) = (nombreDeUsuario u) : nombresDeUsuarios (us,rs,ps)
 
 -- EJ. 2:
 -- amigosDe: dada una RedSocial, devuelve la lista de usuarios con los que se relaciona un usuario en esa red,
@@ -60,7 +58,11 @@ amigo (us1, us2) user | (us1 == user) = [us2]
 -- EJ. 3: 
 -- cantidadDeAmigos: dada una RedSocial y un usuario, devuelve la longitud de la lista de sus amigos en esa red. 
 cantidadDeAmigos :: RedSocial -> Usuario -> Int
-cantidadDeAmigos red user = length (amigosDe red user)
+cantidadDeAmigos red user = longitud (amigosDe red user)
+
+longitud :: [t] -> Int
+longitud [] = 0
+longitud (x:xs) = 1 + longitud (xs)
 
 -- EJ 4: 
 -- usuarioConMasAmigos: dada una RedSocial, devuelve el usuario con mas amigos. 
@@ -72,9 +74,12 @@ usuarioConMasAmigos ((u:us),rs,ps) | (cantidadDeAmigos ((u:us),rs,ps) u) >= (can
                                    where usrMasAmigosResto = usuarioConMasAmigos (us,rs,ps)
 
 -- EJ 5:
--- estaRobertoCarlos: dada una RedSocial devuelve True <=> existe un usuario con mas de 1 millon de amigos.
+-- estaRobertoCarlos: dada una RedSocial devuelve True <=> existe un usuario con mas de "1 millon" de amigos (10).
 estaRobertoCarlos :: RedSocial -> Bool
-estaRobertoCarlos red = ((cantidadDeAmigos red (usuarioConMasAmigos red)) > 1000000)
+estaRobertoCarlos red = hayUnUsuarioConMasDeNAmigos red 10
+
+hayUnUsuarioConMasDeNAmigos :: RedSocial -> Int -> Bool
+hayUnUsuarioConMasDeNAmigos red n = ((cantidadDeAmigos red (usuarioConMasAmigos red)) > n)
 
 -- EJ 6:
 -- publicacionesDe: dada una RedSocial y un usuario, devuelve todas las publicaciones posteadas por el usuario en la red.
@@ -82,12 +87,6 @@ publicacionesDe :: RedSocial -> Usuario -> [Publicacion]
 publicacionesDe (_, _, []) user = []
 publicacionesDe (us, rs, (p:ps)) user | (usuarioDePublicacion p == user) = p : publicacionesDe (us, rs, ps) user
                                       | otherwise = publicacionesDe (us, rs, ps) user
-
--- publicacionDeUsuario: dada una publicacion y un usuario, devuelve la misma publicacion si el usuario es el autor,
---                       caso contrario, devuelve [].
-publicacionDeUsuario :: Publicacion -> Usuario -> [Publicacion]
-publicacionDeUsuario (autor,texto,likes) user | (autor == user) = [(autor,texto,likes)]
-                                              | otherwise = []
 
 -- EJ 7:
 -- publicacionesQueLeGustanA: dada una RedSocial y un usuario, devuelve una lista de las publicaciones que le gustan
@@ -110,86 +109,60 @@ mismosElementos lista1 lista2 = (esSubconjunto lista1 lista2) && (esSubconjunto 
 -- esSubconjunto: devuelve True <=> la primer lista dada es un subconjunto de (esta incluida en) la segunda 
 esSubconjunto :: (Eq t) => [t] -> [t] -> Bool
 esSubconjunto [] lista2 = True
-esSubconjunto lista1 [] = False
-esSubconjunto (x:xs) lista2 | (elem x lista2) = esSubconjunto xs lista2
-                            | otherwise = False
+esSubconjunto _ [] = False
+esSubconjunto (x:xs) lista2 = (elem x lista2) && esSubconjunto xs lista2
 
 -- EJ 9: 
 -- tieneUnSeguidorFiel: dada una RedSocial y un usuario, devuelve True <=> existe un usuario que le likeo todos los posts.
 tieneUnSeguidorFiel :: RedSocial -> Usuario -> Bool
-tieneUnSeguidorFiel ([],rs,ps) user = False
+tieneUnSeguidorFiel ([],_,_) _ = False
 tieneUnSeguidorFiel ((u:us),rs,ps) user | (length (userPosts) == 0) = False
                                         | (u /= user) && (likeoTodosLosPosts u userPosts) = True
                                         | otherwise = tieneUnSeguidorFiel (us, rs, ps) user
                                         where userPosts = publicacionesDe ((u:us),rs,ps) user
 
--- likeoTodosLosPosts: dado un usuario y una lista de publicaciones, devuelve True <=> el usuario likeo a todas.
+-- likeoTodosLosPosts: dado un usuario y una lista de publicaciones, devuelve True <=> el usuario likeo a todas. Tambien devuelve true si la lista de publicaciones esta vacia.
 likeoTodosLosPosts :: Usuario -> [Publicacion] -> Bool
 likeoTodosLosPosts user [] = True
 likeoTodosLosPosts user (p:ps) | elem user (likesDePublicacion p) = likeoTodosLosPosts user ps
                                | otherwise = False
 -- EJ 10:
--- existeSecuenciaDeAmigos: dada una RedSocial y dos usuarios, devuelve True <=> ambos estan en la misma clase de equivalencia
---                          determinada por la relacion "ser amigo".
+-- existeSecuenciaDeAmigos: dada una RedSocial devuelve True <=> Existe una cadena de amigos entre user1 y user2,
+-- es decir, si estan en la misma particion o clase de equivalencia, determinada por la relacion "Amigo".
 existeSecuenciaDeAmigos :: RedSocial -> Usuario -> Usuario -> Bool
-existeSecuenciaDeAmigos red userI userF | sonAmigos (relaciones red) userI userF = True
-                                        | not (tieneAmigos userI && tieneAmigos userF) = False
-                                        | otherwise = algunAmigoTieneSecuenciaA red amigos userF
-                                        where tieneAmigos user = (cantidadDeAmigos red user > 0)
-                                              amigos = amigosDe red userI
+existeSecuenciaDeAmigos red user1 user2 = existeSecuenciaDeAmigosSin red user1 user2 []
 
--- sonAmigos: dada una lista de relaciones y dos usuarios, devuelve True <=> existe una tupla en la que estan ambos.
-sonAmigos :: [Relacion] -> Usuario -> Usuario -> Bool
-sonAmigos [] u1 u2 = False
-sonAmigos (r:rs) u1 u2 | (fst r == u1) && (snd r == u2) = True 
-                       | (fst r == u2) && (snd r == u1) = True
-                       | otherwise = sonAmigos rs u1 u2
+-- para esto implementamos una funcion auxiliar que toma rastro de los caminos recorridos para evitar bucles infinitos
+-- existeSecuenciaDeAmigosSin: devuelve True cuando existe un camino entre el user1 y el user2, sin pasar por los nodos
+-- determinados en chequeados. 
+existeSecuenciaDeAmigosSin :: RedSocial -> Usuario -> Usuario -> Set Usuario -> Bool
+existeSecuenciaDeAmigosSin red user1 user2 chequeados | relacionadosDirecto user1 user2 red = True
+                                                      | not ((tieneAmigos user1) && (tieneAmigos user2)) = False
+                                                      | otherwise = algunAmigoTieneSecuenciaA red amigosUser1 user2 (user1:chequeados)
+                                                      where tieneAmigos userk = (longitud (amigosDe red userk) > 0) 
+                                                            amigosUser1 = amigosDe red user1
 
--- algunAmigoTieneSecuenciaA: dada una lista de usuarios (al menos hay uno) y un usuario final, devuelve True <=> alguno esta en la misma 
---                            clase de equivalencia.
-algunAmigoTieneSecuenciaA :: RedSocial -> [Usuario] -> Usuario -> Bool
-algunAmigoTieneSecuenciaA red [] user = False
-algunAmigoTieneSecuenciaA red (a:as) user | existeSecuenciaDeAmigos red a user = True
-                                          | otherwise = algunAmigoTieneSecuenciaA red as user 
+-- para implementar este registro de los usuarios chequeados es conveniente usar un conjunto 
+type Set t = [t]
 
--- Borrar:
-usuario1 = (1, "Juan")
-usuario2 = (2, "Natalia")
-usuario3 = (3, "Pedro")
-usuario4 = (4, "Mariela")
-usuario5 = (5, "Natalia")
+agregar :: (Eq t) => t -> Set t -> Set t
+agregar t set | elem t set = set
+              | otherwise = t : set
 
-relacion1_2 = (usuario1, usuario2)
-relacion1_3 = (usuario1, usuario3)
-relacion1_4 = (usuario4, usuario1) -- Notar que el orden en el que aparecen los usuarios es indistinto
-relacion2_3 = (usuario3, usuario2)
-relacion2_4 = (usuario2, usuario4)
-relacion3_4 = (usuario4, usuario3)
+-- algunAmigoTieneSecuenciaA: dado una lista de amigos con al menos un elemento, un usuario final y los nodos registrados
+-- devuelve True <=> existe un camino de amigos entre algun amigo y el usuario final, sin pasar por los nodos ya chequeados
+-- params:
+--    red: red de la cual vemos las relaciones
+--    amigos: lista de amigos donde buscar 
+--    usf: usuario destino
+--    chequeados: lista de usuarios ya chequeados
+algunAmigoTieneSecuenciaA :: RedSocial -> [Usuario] -> Usuario -> Set Usuario -> Bool
+algunAmigoTieneSecuenciaA red [] _ _ = False
+algunAmigoTieneSecuenciaA red (a:as) usf chequeados = (not (elem a chequeados) && existeSecuenciaDeAmigosSin red a usf chequeados) 
+                                                      || (algunAmigoTieneSecuenciaA red as usf (agregar a (chequeados)))
 
-publicacion1_1 = (usuario1, "Este es mi primer post", [usuario2, usuario4])
-publicacion1_2 = (usuario1, "Este es mi segundo post", [usuario4])
-publicacion1_3 = (usuario1, "Este es mi tercer post", [usuario2, usuario5])
-publicacion1_4 = (usuario1, "Este es mi cuarto post", [])
-publicacion1_5 = (usuario1, "Este es como mi quinto post", [usuario5])
-
-publicacion2_1 = (usuario2, "Hello World", [usuario4])
-publicacion2_2 = (usuario2, "Good Bye World", [usuario1, usuario4])
-
-publicacion3_1 = (usuario3, "Lorem Ipsum", [])
-publicacion3_2 = (usuario3, "dolor sit amet", [usuario2])
-publicacion3_3 = (usuario3, "consectetur adipiscing elit", [usuario2, usuario5])
-
-publicacion4_1 = (usuario4, "I am Alice. Not", [usuario1, usuario2])
-publicacion4_2 = (usuario4, "I am Bob", [])
-publicacion4_3 = (usuario4, "Just kidding, i am Mariela", [usuario1, usuario3])
-
-
-usuariosA = [usuario1, usuario2, usuario3, usuario4]
-relacionesA = [relacion1_2, relacion1_4, relacion2_3, relacion2_4, relacion3_4]
-publicacionesA = [publicacion1_1, publicacion1_2, publicacion2_1, publicacion2_2, publicacion3_1, publicacion3_2, publicacion4_1, publicacion4_2]
-redA = (usuariosA, relacionesA, publicacionesA)
-
-usuariosB = [usuario1, usuario2, usuario3, usuario5]
-relacionesB = [relacion1_2, relacion2_3]
-publicacionesB = [publicacion1_3, publicacion1_4, publicacion1_5, publicacion3_1, publicacion3_2, publicacion3_3]
-redB = (usuariosB, relacionesB, publicacionesB)
+-- relacionadosDirecto: dada una red y dos usuarios validos, devuelve true si son amigos, es decir, si existe una 
+-- tupla (u1,u2) o (u2,u1) en las relaciones de la red.
+relacionadosDirecto :: Usuario -> Usuario -> RedSocial -> Bool
+relacionadosDirecto u1 u2 (_,[],_) = False
+relacionadosDirecto u1 u2 (us,(r:rs),pst) = (r == (u1,u2)) || (r == (u2,u1)) || (relacionadosDirecto u1 u2 (us,rs,pst))
