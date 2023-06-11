@@ -1,3 +1,3 @@
-# Introducción a la Programación (AED 1) - Primer Cuatrimestre 2023
+# Introducción a la Programación - Primer Cuatrimestre 2023 :tropical_fish:
   
 Archivos de la materia, teoria, practicas y resueltos.
