@@ -36,4 +36,3 @@ Archivos correspondientes a la cursada de Introduccion a la Programacion / Algor
   - Práctica 10
      - [Enunciado](Practicas/Guia%2010%20-%20Archivos%2C%20Pilas%2C%20Colas%20y%20Diccionarios/Enunciado.pdf)
      - [Soluciones](Practicas/Guia%2010%20-%20Archivos%2C%20Pilas%2C%20Colas%20y%20Diccionarios/Solucion/guia10-resuelta.ipynb)
-
