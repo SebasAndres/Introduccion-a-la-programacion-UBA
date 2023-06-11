@@ -1,3 +1,3 @@
-# Introducción a la Programación - Primer Cuatrimestre 2023 :tropical_fish:
+# Introducción a la Programación - Primer Cuatrimestre 2023 (Exactas UBA)
   
-Archivos de la materia, teoria, practicas y resueltos.
+:tropical_fish: Archivos de la materia, teoria, practicas y resueltos.
