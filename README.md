@@ -8,7 +8,11 @@ Archivos correspondientes a la cursada de Introduccion a la Programacion / Algor
 > Repositorio Luloide: https://github.com/Luloide/IP/tree/main <br>
 > Repositorio Nachodall: https://github.com/nachodall/UBA-FCEN-IP-AyED1
 
-## Contenidos 
+## Contenido
+
+Especificación y resolución de problemas mediante el uso de algoritmos, demostraciones rigurosas de su comportamiento. Nociones de programación imperativa y funcional, herramientas de desarrollo. Proyectos grupales.
+
+## Guias
 
 - Prácticas
   - Práctica 1
