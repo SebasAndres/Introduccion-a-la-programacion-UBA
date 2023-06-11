@@ -10,7 +10,15 @@ Archivos correspondientes a la cursada de Introduccion a la Programacion / Algor
 
 ## Contenido
 
-Especificación y resolución de problemas mediante el uso de algoritmos, demostraciones rigurosas de su comportamiento. Nociones de programación imperativa y funcional, herramientas de desarrollo. Proyectos grupales.
+- Panorama general de la computación, incluyendo descripción de la carrera.
+- Lógica proposicional: sintaxis, semántica, tautologı́a, consecuencia semántica, conjunto satisfacible. Lógica de primer orden: términos, fórmulas, variables libres y ligadas, interpretación, valuación, niveles de verdad, consecuencia semántica, conjunto satisfacible.
+- Algoritmos y resolución de problemas. Variables, expresiones y tipos. Herramientas de abstracción y modularización. Separación de comportamiento e implementación. Noción de contrato (informal). 
+- Estructuras de control: secuencia, selección, iteración y recursión.
+- Tipos de datos: booleanos, enteros, tipos enumerados, tuplas, registros (structs), listas. 
+- Tipos abstractos de datos: interfaz pública vs. representación privada. Arreglos, pilas, colas, conjuntos, diccionarios. 
+- Nociones básicas de modularización (ej. clases).
+- Nociones básicas de testing.
+- Cálculo de operaciones elementales, e introducción al análisis de peor caso de una función.
 
 ## Guias
 
