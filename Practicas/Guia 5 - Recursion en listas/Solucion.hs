@@ -282,10 +282,11 @@ partes :: Integer -> Set (Set Integer)
 partes 0 = [[]]
 partes n = partes (n-1) ++ agregarATodos n (partes (n-1))
 
-productoCartesiano :: Set Integer -> Set Integer -> Set (Integer, Integer)
-productoCartesiano [] lista_b = []
-productoCartesiano (x:xs) lista_b = armarTuplas x lista_b ++ productoCartesiano xs lista_b
+productoCartesiano :: Set Int -> Set Int -> Set (Int, Int)
+productoCartesiano [] b = []
+productoCartesiano a [] = []
+productoCartesiano (ax : axs) b = armarTuplas ax b ++ productoCartesiano axs b 
 
-armarTuplas :: Integer -> Set Integer -> Set (Integer, Integer) 
-armarTuplas a [] = []
-armarTuplas t (x:xs) = (t, x) : armarTuplas t xs
+armarTuplas :: Int -> Set Int -> Set (Int, Int)
+armarTuplas n [] = []
+armarTuplas n (x:xs) = (n, x) : armarTuplas n xs
