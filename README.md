@@ -1,4 +1,4 @@
-# Introducción a la Programación - Primer Cuatrimestre 2023 (Exactas UBA)
+# Introducción a la Programación - Exactas UBA
   
 :tropical_fish: :tropical_fish: :tropical_fish:
 
