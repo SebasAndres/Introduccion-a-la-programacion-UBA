@@ -1,10 +1,6 @@
 -- Archivo "identico" a iap1-tp.hs
 
 -- Nombre de Grupo: AlgoritmosEnAccion 
--- Integrante 1: Sebastian Andres, sebastian.ignacio.andres@gmail.com, LU: 1028/22
--- Integrante 2: Adrian Florio, adrii.21@hotmail.com, LU: 333/23
--- Integrante 3: Moira Agustina Gonzalez, 18agonz@gmail.com, LU: 355/23
--- Integrante 4: Luciano Salvador Contartese, luciano90@gmail.com, LU: 628/14
 
 module Solucion where
 
